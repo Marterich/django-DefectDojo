@@ -103,6 +103,11 @@ class TenableCSVParser:
             mitigation = str(row.get("Solution", row.get("definition.solution", "N/A")))
             impact = row.get("Description", row.get("definition.description", "N/A"))
             references = row.get("See Also", row.get("definition.see_also", "N/A"))
+            plugin_id = row.get("Plugin ID", row.get("definition.pluginId", row.get("Plugin","N/A")))
+            pub_date = row.get("Plugin Publication Date", row.get("definition.plugin_publication_date", "N/A"))
+            mod_date = row.get("Plugin Modification Date", row.get("definition.plugin_modification_date", "N/A"))
+            plugin_info = f"Tenable Plugin - ID: {plugin_id}, Published: {pub_date}, Modified: {mod_date}"
+            references_combined = f"{references}\n{plugin_info}"
             # Determine if the current row has already been processed
             dupe_key = (
                 severity
@@ -122,7 +127,7 @@ class TenableCSVParser:
                     severity=severity,
                     mitigation=mitigation,
                     impact=impact,
-                    references=references,
+                    references=references_combined,
                 )
 
                 # manage CVSS vector (only v3.x for now)
